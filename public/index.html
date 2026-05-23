@@ -676,9 +676,9 @@
       if(item.price < 0) return alert('Giá bán không hợp lệ.');
       let result;
       if(id) result = await db.from('products').update(item).eq('id', id);
-      else result = await db.from('products').upsert(item, { onConflict: 'code' });
+      else result = await db.from('products').upsert(item, { onConflict: 'group_name,name' });
       if(result.error) return alert('Lỗi lưu sản phẩm: '+result.error.message);
-      resetProductForm(); await loadProductsOnline(); alert('Đã lưu sản phẩm online.');
+      resetProductForm(); await loadProductsOnline(); alert(id ? 'Đã cập nhật sản phẩm online.' : 'Đã lưu/cập nhật sản phẩm online.');
     }
 
     function editProduct(id){
