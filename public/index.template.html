@@ -337,8 +337,8 @@
 
   <script>
     // ===== CONFIG SUPABASE - DÁN THÔNG TIN CỦA BẠN VÀO ĐÂY =====
-   const SUPABASE_URL = '__SUPABASE_URL__';
-    const SUPABASE_KEY = '__SUPABASE_ANON_KEY__';
+   const SUPABASE_URL = 'https://jrkmhalznaxsskazyggt.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_VHNiWKy9mwV3rZAvLs85pQ_fKKFFQQh';
     const BANK_INFO = {
       bankName: '__BANK_NAME__',
       accountNo: '__BANK_ACCOUNT_NO__',
@@ -347,7 +347,7 @@
     };
     // ============================================================
 
-    const isConfigured = SUPABASE_URL.startsWith('https://') && !SUPABASE_KEY.includes('DAN_SUPABASE');
+    const isConfigured = SUPABASE_URL.startsWith('https://') && SUPABASE_KEY.startsWith('sb_') && !SUPABASE_URL.includes('/rest/v1');
     let db = null;
     let currentUser = null;
     let products = [];

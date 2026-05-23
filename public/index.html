@@ -347,7 +347,7 @@
     };
     // ============================================================
 
-    const isConfigured = SUPABASE_URL.startsWith('https://') && !SUPABASE_KEY.includes('DAN_SUPABASE');
+    const isConfigured = SUPABASE_URL.startsWith('https://') && SUPABASE_KEY.startsWith('sb_') && !SUPABASE_URL.includes('/rest/v1');
     let db = null;
     let currentUser = null;
     let products = [];
