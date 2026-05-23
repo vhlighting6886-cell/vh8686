@@ -1,0 +1,1 @@
+Nếu muốn in QR ngân hàng, đặt file qr.jpg vào thư mục public/ hoặc đổi BANK_QR_IMAGE thành URL ảnh QR.

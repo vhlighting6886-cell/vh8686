@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vũ Hoàng Lighting - Bán hàng Online</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root { --primary:#f59e0b; --primary-dark:#b45309; --dark:#111827; --muted:#6b7280; --line:#e5e7eb; --bg:#f8fafc; --card:#fff; --danger:#dc2626; --success:#16a34a; --blue:#2563eb; }
+    *{box-sizing:border-box} body{margin:0;font-family:Tahoma,'Segoe UI',Arial,Helvetica,sans-serif;background:var(--bg);color:var(--dark);font-variant-ligatures:none}
+    .app{max-width:1200px;margin:0 auto;padding:16px}.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px 20px;border-radius:22px;background:linear-gradient(135deg,#111827,#292524);color:#fff;box-shadow:0 12px 30px rgba(17,24,39,.18);margin-bottom:16px}.brand h1{margin:0;font-size:26px;letter-spacing:.5px}.brand p{margin:6px 0 0;color:#fde68a;font-size:14px}.shop-info{text-align:right;font-size:13px;line-height:1.6;color:#f9fafb}.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}.tab-btn{background:#fff;color:#111827;border:1px solid var(--line);box-shadow:0 6px 14px rgba(15,23,42,.05)}.tab-btn.active{background:var(--primary);border-color:var(--primary)}.tab-page{display:none}.tab-page.active{display:block}.grid{display:grid;grid-template-columns:1fr 1.35fr;gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 10px 22px rgba(15,23,42,.06)}.card h2{margin:0 0 14px;font-size:18px}label{display:block;font-weight:700;font-size:13px;margin-bottom:6px}input,textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:15px;outline:none;background:#fff}input:focus,textarea:focus,select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(245,158,11,.16)}textarea{resize:vertical;min-height:72px}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.form-row-3{display:grid;grid-template-columns:1.1fr .7fr .8fr;gap:12px;margin-bottom:12px}.form-row-4{display:grid;grid-template-columns:.8fr 1.4fr .6fr .8fr;gap:12px;margin-bottom:12px}.full{margin-bottom:12px}.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}button{border:0;border-radius:14px;padding:12px 15px;font-weight:800;cursor:pointer;font-size:14px}.btn-primary{background:var(--primary);color:#111827}.btn-dark{background:var(--dark);color:#fff}.btn-light{background:#f3f4f6;color:#111827;border:1px solid var(--line)}.btn-danger{background:#fee2e2;color:var(--danger)}.btn-success{background:#dcfce7;color:var(--success)}.btn-blue{background:#dbeafe;color:var(--blue)}.hint{color:var(--muted);font-size:13px;line-height:1.5;margin-top:8px}.notice{background:#fffbeb;border:1px dashed #f59e0b;color:#78350f;border-radius:14px;padding:10px 12px;margin-bottom:12px;font-size:13px;line-height:1.5}table{width:100%;border-collapse:collapse}th,td{border-bottom:1px solid var(--line);padding:10px 8px;font-size:14px;text-align:left;vertical-align:middle}th{background:#f9fafb;font-size:13px;color:#374151}.right{text-align:right}.center{text-align:center}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px}.total-box{margin-top:14px;display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}.summary{background:#f9fafb;border:1px solid var(--line);border-radius:16px;padding:14px}.sum-line{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed #d1d5db}.sum-line:last-child{border-bottom:0;font-size:20px;font-weight:900;color:var(--primary-dark)}.invoice{display:none;background:#fff;color:#111827}.invoice-inner{width:210mm;min-height:297mm;margin:0 auto;padding:12mm;background:#fff}.invoice-head{display:flex;justify-content:space-between;gap:16px;border-bottom:3px solid #111827;padding-bottom:12px}.invoice-brand h1{margin:0;font-size:28px}.invoice-brand p,.invoice-meta p{margin:4px 0;font-size:13px}.invoice-title{text-align:center;margin:18px 0 14px}.invoice-title h2{margin:0;font-size:24px}.customer-box{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin-bottom:14px;font-size:14px}.invoice table th,.invoice table td{border:1px solid #d1d5db;padding:8px;font-size:13px}.invoice table th{background:#f3f4f6}.invoice-total{width:340px;margin-left:auto;margin-top:12px;border:1px solid #d1d5db;border-radius:8px;overflow:hidden}.invoice-total div{display:flex;justify-content:space-between;padding:9px 12px;border-bottom:1px solid #d1d5db;font-size:14px}.invoice-total div:last-child{border-bottom:0;font-weight:900;font-size:18px}.signature{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;text-align:center;font-size:14px}.signature strong{display:block;margin-bottom:70px}.thanks{margin-top:20px;text-align:center;font-weight:700;color:#92400e}.small-muted{color:var(--muted);font-size:12px}.catalog-list{max-height:440px;overflow:auto;border:1px solid var(--line);border-radius:16px}.empty{text-align:center;color:var(--muted);padding:22px}.badge{display:inline-block;background:#f3f4f6;border:1px solid var(--line);border-radius:999px;padding:5px 10px;font-size:12px;color:#374151}.login-wrap{min-height:100vh;display:grid;place-items:center;padding:16px}.login-card{max-width:460px;width:100%;background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 18px 40px rgba(15,23,42,.12)}.login-card h1{margin:0 0 8px;font-size:26px}.status{font-size:13px;color:#374151;background:#f9fafb;border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0}.hidden{display:none!important}
+
+    .customer-actions{display:flex;gap:10px;flex-wrap:wrap;margin:-2px 0 12px;}
+    .customer-actions button{padding:10px 12px;}
+    @media(max-width:900px){.grid,.total-box{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}.shop-info{text-align:left}.form-row,.form-row-3,.form-row-4{grid-template-columns:1fr}}
+    @media print{body{background:#fff}.app,.login-wrap{display:none!important}.invoice{display:block!important}.invoice-inner{width:auto;min-height:auto;padding:0}@page{size:A5 portrait;margin:5mm}}
+
+
+    /* ===== TỐI ƯU HÓA ĐƠN IN PDF KHỔ A5 ===== */
+    .invoice-inner{
+      width:148mm !important;
+      min-height:210mm !important;
+      margin:0 auto !important;
+      padding:7mm !important;
+      background:#fff !important;
+      color:#111827 !important;
+      font-family:Tahoma,'Segoe UI',Arial,Helvetica,sans-serif !important;font-variant-ligatures:none !important;
+    }
+    .invoice-head{
+      display:flex !important;
+      justify-content:space-between !important;
+      align-items:flex-start !important;
+      gap:10mm !important;
+      border-bottom:2px solid #111827 !important;
+      padding-bottom:5mm !important;
+      margin-bottom:4mm !important;
+    }
+    .invoice-brand h1{
+      margin:0 0 1.5mm !important;
+      font-size:18pt !important;
+      line-height:1.1 !important;
+      letter-spacing:.2px !important;
+    }
+    .invoice-brand p,
+    .invoice-meta p{
+      margin:1mm 0 !important;
+      font-size:8.8pt !important;
+      line-height:1.25 !important;
+    }
+    .invoice-meta{
+      min-width:42mm !important;
+      text-align:right !important;
+      white-space:nowrap !important;
+    }
+    .invoice-title{
+      text-align:center !important;
+      margin:4mm 0 4mm !important;
+    }
+    .invoice-title h2{
+      margin:0 !important;
+      font-size:16pt !important;
+      line-height:1.15 !important;
+      letter-spacing:.2px !important;
+    }
+    .invoice-title p{
+      margin:1.5mm 0 0 !important;
+      font-size:8.2pt !important;
+    }
+    .customer-box{
+      display:grid !important;
+      grid-template-columns:1fr 1fr !important;
+      gap:2mm 7mm !important;
+      margin-bottom:4mm !important;
+      font-size:9.5pt !important;
+      line-height:1.35 !important;
+    }
+    .invoice table{
+      width:100% !important;
+      border-collapse:collapse !important;
+      table-layout:fixed !important;
+      margin-top:2mm !important;
+    }
+    .invoice table th,
+    .invoice table td{
+      border:1px solid #cbd5e1 !important;
+      padding:2mm 1.6mm !important;
+      font-size:8.7pt !important;
+      line-height:1.25 !important;
+      vertical-align:middle !important;
+      word-break:break-word !important;
+    }
+    .invoice table th{
+      background:#f3f4f6 !important;
+      font-weight:700 !important;
+    }
+    .invoice table th:nth-child(1),
+    .invoice table td:nth-child(1){width:9mm !important;text-align:center !important;}
+    .invoice table th:nth-child(2),
+    .invoice table td:nth-child(2){width:18mm !important;}
+    .invoice table th:nth-child(4),
+    .invoice table td:nth-child(4){width:12mm !important;text-align:center !important;}
+    .invoice table th:nth-child(5),
+    .invoice table td:nth-child(5){width:10mm !important;text-align:right !important;}
+    .invoice table th:nth-child(6),
+    .invoice table td:nth-child(6){width:20mm !important;text-align:right !important;}
+    .invoice table th:nth-child(7),
+    .invoice table td:nth-child(7){width:24mm !important;text-align:right !important;}
+    .invoice-pay-area{
+      display:grid !important;
+      grid-template-columns:1fr 60mm !important;
+      gap:4mm !important;
+      align-items:start !important;
+      margin-top:3mm !important;
+    }
+    .bank-qr-box{
+      width:100% !important;
+      border:1px solid #cbd5e1 !important;
+      border-radius:4px !important;
+      padding:3mm !important;
+      display:block !important;
+      page-break-inside:avoid !important;
+    }
+    .bank-qr-title{
+      font-size:9pt !important;
+      font-weight:800 !important;
+      margin-bottom:2mm !important;
+      display:block !important;
+    }
+    .bank-qr-content{display:flex !important;gap:3mm !important;align-items:flex-start !important;}
+    .bank-qr-box img{
+      width:32mm !important;
+      height:32mm !important;
+      object-fit:contain !important;
+      border:1px solid #e5e7eb !important;
+      border-radius:3px !important;
+      background:#fff !important;
+      flex:0 0 32mm !important;
+    }
+    .bank-info-lines{
+      display:flex !important;
+      flex-direction:column !important;
+      gap:2mm !important;
+      font-size:9pt !important;
+      line-height:1.35 !important;
+      justify-content:center !important;
+      min-height:32mm !important;
+    }
+    .bank-info-lines strong{min-width:22mm !important;display:inline-block !important;}
+    .invoice-total{
+      width:60mm !important;
+      margin-left:auto !important;
+      margin-top:3mm !important;
+      border:1px solid #cbd5e1 !important;
+      border-radius:4px !important;
+      overflow:hidden !important;
+      page-break-inside:avoid !important;
+    }
+    .invoice-total div{
+      display:flex !important;
+      justify-content:space-between !important;
+      align-items:center !important;
+      gap:5mm !important;
+      padding:2mm 2.5mm !important;
+      border-bottom:1px solid #cbd5e1 !important;
+      font-size:9pt !important;
+      line-height:1.25 !important;
+    }
+    .invoice-total div:last-child{
+      border-bottom:0 !important;
+      font-weight:900 !important;
+      font-size:13pt !important;
+      color:#111827 !important;
+      background:#fff7ed !important;
+    }
+    .signature{
+      display:grid !important;
+      grid-template-columns:1fr 1fr !important;
+      gap:16mm !important;
+      margin-top:8mm !important;
+      text-align:center !important;
+      font-size:9pt !important;
+      page-break-inside:avoid !important;
+    }
+    .signature strong{
+      display:block !important;
+      margin-bottom:18mm !important;
+      font-size:9.5pt !important;
+    }
+    .thanks{
+      margin-top:4mm !important;
+      text-align:center !important;
+      font-weight:800 !important;
+      font-size:9.5pt !important;
+      color:#92400e !important;
+      page-break-inside:avoid !important;
+    }
+    .small-muted{font-size:8.2pt !important;color:#6b7280 !important;}
+
+    @media print{
+      html,body{
+        width:148mm !important;
+        min-height:210mm !important;
+        background:#fff !important;
+        margin:0 !important;
+        padding:0 !important;
+        -webkit-print-color-adjust:exact !important;
+        print-color-adjust:exact !important;
+      }
+      .app,.login-wrap{display:none !important;}
+      .invoice{display:block !important;background:#fff !important;}
+      .invoice-inner{
+        width:148mm !important;
+        min-height:auto !important;
+        padding:6mm !important;
+        margin:0 auto !important;
+        box-shadow:none !important;
+      }
+      .invoice table tr,
+      .invoice-total,
+      .invoice-pay-area,
+      .bank-qr-box,
+      .signature,
+      .thanks{break-inside:avoid !important;page-break-inside:avoid !important;}
+      @page{size:A5 portrait;margin:5mm;}
+    }
+
+  </style>
+</head>
+<body>
+  <div id="loginWrap" class="login-wrap">
+    <div class="login-card">
+      <h1>VŨ HOÀNG LIGHTING</h1>
+      <p class="hint">Đăng nhập để quản lý sản phẩm và đơn hàng online.</p>
+      <div id="configWarning" class="notice hidden"><strong>Chưa cấu hình Supabase.</strong><br>Hãy dán Project URL và Publishable/anon key vào phần CONFIG trong code.</div>
+      <div class="full"><label>Email</label><input id="loginEmail" type="email" placeholder="email đăng nhập" /></div>
+      <div class="full"><label>Mật khẩu</label><input id="loginPassword" type="password" placeholder="mật khẩu" /></div>
+      <div class="btns">
+        <button class="btn-primary" onclick="signIn()">Đăng nhập</button>
+        <button class="btn-light" onclick="signUp()">Tạo tài khoản</button>
+      </div>
+      <div id="loginStatus" class="status">Dữ liệu sẽ được lưu online trên Supabase.</div>
+    </div>
+  </div>
+
+  <div id="mainApp" class="app hidden">
+    <header class="topbar">
+      <div class="brand"><h1>VŨ HOÀNG LIGHTING</h1><p>Phần mềm bán hàng online </p></div>
+      <div class="shop-info"><div><strong>Hotline:</strong> 0877933362</div><div><strong>Tài khoản:</strong> <span id="userEmail"></span></div><button class="btn-light" onclick="signOut()" style="margin-top:8px;padding:8px 12px;">Đăng xuất</button></div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" id="tabSaleBtn" onclick="openTab('sale')">Bán hàng nhanh</button>
+      <button class="tab-btn" id="tabProductBtn" onclick="openTab('products')">Quản lý sản phẩm</button>
+      <button class="tab-btn" id="tabOrderBtn" onclick="openTab('orders')">Đơn hàng đã lưu</button>
+      <button class="tab-btn" id="tabCustomersBtn" onclick="openTab('customers')">Khách hàng</button>
+    </div>
+
+    <main id="salePage" class="tab-page active">
+      <div class="grid">
+        <section class="card">
+          <h2>1. Thông tin khách hàng</h2>
+          <div class="form-row"><div><label>Tên khách hàng</label><input id="customerName" placeholder="Nhập tên để tự hiện thông tin đã lưu" list="customerNames" /><datalist id="customerNames"></datalist></div><div><label>Số điện thoại</label><input id="customerPhone" placeholder="Ví dụ: 0988..." /></div></div>
+          <div class="full"><label>Địa chỉ</label><input id="customerAddress" placeholder="Địa chỉ giao hàng" /></div>
+          <div class="full"><label>Ghi chú</label><textarea id="note" placeholder="Ví dụ: giao trong ngày, khách chuyển khoản..."></textarea></div>
+          <div class="customer-actions"><button class="btn-success" onclick="saveCustomerFromSale(false)">Lưu thông tin khách</button><button class="btn-blue" onclick="openTab('customers')">Quản lý khách hàng</button></div>
+          <h2>2. Nhập mã sản phẩm</h2>
+          <div class="notice"><strong>Online:</strong> sản phẩm được lấy từ Supabase. Thêm sản phẩm ở mục Quản lý sản phẩm, máy tính và điện thoại đều dùng chung.</div>
+          <div class="form-row-3"><div><label>Mã sản phẩm</label><input id="productCode" placeholder="Nhập mã hoặc quét mã" list="productCodes" /><datalist id="productCodes"></datalist></div><div><label>Số lượng</label><input id="quantity" type="number" min="1" value="1" /></div><div><label>Giá tùy chỉnh</label><input id="customPrice" type="number" min="0" placeholder="Bỏ trống nếu lấy giá sẵn" /></div></div>
+          <div class="btns"><button class="btn-primary" onclick="addProductToCart()">+ Thêm vào hóa đơn</button><button class="btn-light" onclick="clearProductInput()">Xóa ô nhập</button><button class="btn-blue" onclick="openTab('products')">+ Thêm mã mới</button></div>
+          <p class="hint">Mẹo: nhập mã rồi bấm Enter để thêm sản phẩm nhanh.</p>
+        </section>
+
+        <section class="card">
+          <h2>3. Hóa đơn bán hàng</h2>
+          <div class="table-wrap"><table><thead><tr><th>STT</th><th>Mã</th><th>Tên sản phẩm</th><th>ĐVT</th><th class="right">SL</th><th class="right">Đơn giá</th><th class="right">Thành tiền</th><th></th></tr></thead><tbody id="cartBody"><tr><td colspan="8" class="empty">Chưa có sản phẩm</td></tr></tbody></table></div>
+          <div class="total-box"><div><div class="form-row"><div><label>Chiết khấu</label><input id="discount" type="number" min="0" value="0" oninput="renderCart()" /></div><div><label>Phí vận chuyển</label><input id="shippingFee" type="number" min="0" value="0" oninput="renderCart()" /></div></div><div class="form-row"><div><label>Đã thanh toán</label><input id="paid" type="number" min="0" value="0" oninput="renderCart()" /></div><div><label>Còn phải thu</label><input id="remainPreview" type="text" readonly value="0đ" /></div></div><div class="btns"><button class="btn-success" onclick="saveOrderOnline()">Lưu đơn online</button><button class="btn-dark" onclick="printInvoice()">In / Lưu PDF</button><button class="btn-danger" onclick="newOrder()">Tạo đơn mới</button></div><p class="hint">Nên bấm <strong>Lưu đơn online</strong> trước, sau đó in hoặc lưu PDF gửi khách.</p></div><div class="summary"><div class="sum-line"><span>Tạm tính</span><strong id="subtotalText">0đ</strong></div><div class="sum-line"><span>Chiết khấu</span><strong id="discountText">0đ</strong></div><div class="sum-line"><span>Phí vận chuyển</span><strong id="shippingFeeText">0đ</strong></div><div class="sum-line"><span>Đã thanh toán</span><strong id="paidText">0đ</strong></div><div class="sum-line"><span>Còn lại</span><strong id="debtText">0đ</strong></div><div class="sum-line"><span>Tổng tiền</span><strong id="grandText">0đ</strong></div></div></div>
+        </section>
+      </div>
+    </main>
+
+    <main id="productsPage" class="tab-page">
+      <section class="card"><h2>Quản lý sản phẩm online</h2><input type="hidden" id="editingProductId" /><div class="form-row-4"><div><label>Mã sản phẩm</label><input id="pmCode" placeholder="VD: RAY48V-01" /></div><div><label>Tên sản phẩm</label><input id="pmName" placeholder="VD: Đèn ray nam châm 48V" /></div><div><label>ĐVT</label><input id="pmUnit" placeholder="Cái / Mét / Bộ" /></div><div><label>Giá bán</label><input id="pmPrice" type="number" min="0" placeholder="VD: 150000" /></div></div><div class="btns"><button class="btn-primary" onclick="saveProductOnline()" id="saveProductBtn">Lưu sản phẩm online</button><button class="btn-light" onclick="resetProductForm()">Nhập mới</button><button class="btn-blue" onclick="loadProductsOnline()">Tải lại dữ liệu</button></div><p class="hint">Sản phẩm lưu online. Mở điện thoại hoặc máy tính đều thấy chung danh mục.</p></section>
+      <section class="card" style="margin-top:16px"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px"><h2 style="margin:0">Danh mục sản phẩm <span class="badge" id="productCount">0 sản phẩm</span></h2><div style="min-width:260px"><input id="searchProduct" placeholder="Tìm mã hoặc tên sản phẩm..." oninput="renderProductManager()" /></div></div><div class="catalog-list"><table><thead><tr><th>Mã SP</th><th>Tên sản phẩm</th><th>ĐVT</th><th class="right">Giá bán</th><th class="center">Thao tác</th></tr></thead><tbody id="productManagerBody"></tbody></table></div></section>
+    </main>
+
+    <main id="ordersPage" class="tab-page">
+      <section class="card"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px"><h2 style="margin:0">Đơn hàng đã lưu <span class="badge" id="orderCount">0 đơn</span></h2><button class="btn-blue" onclick="loadOrdersOnline()">Tải lại đơn</button></div><div class="catalog-list"><table><thead><tr><th>Mã đơn</th><th>Ngày</th><th>Khách hàng</th><th>SĐT</th><th class="right">Tổng tiền</th><th class="right">Còn nợ</th><th class="center">Thao tác</th></tr></thead><tbody id="ordersBody"></tbody></table></div></section>
+    </main>
+
+    <main id="customersPage" class="tab-page">
+      <section class="card">
+        <h2>Thêm / sửa thông tin khách hàng</h2>
+        <input type="hidden" id="editingCustomerId" />
+        <div class="form-row">
+          <div><label>Tên khách hàng</label><input id="cmName" placeholder="Ví dụ: Anh Nam" /></div>
+          <div><label>Số điện thoại</label><input id="cmPhone" placeholder="Ví dụ: 0988..." /></div>
+        </div>
+        <div class="full"><label>Địa chỉ</label><input id="cmAddress" placeholder="Địa chỉ khách hàng" /></div>
+        <div class="full"><label>Ghi chú</label><textarea id="cmNote" placeholder="Ghi chú riêng về khách hàng"></textarea></div>
+        <div class="btns">
+          <button class="btn-primary" onclick="saveCustomerOnline()" id="saveCustomerBtn">Lưu khách hàng</button>
+          <button class="btn-light" onclick="resetCustomerForm()">Nhập mới</button>
+          <button class="btn-blue" onclick="loadCustomersOnline()">Tải lại khách</button>
+        </div>
+        <p class="hint">Sau khi lưu khách hàng, khi lên đơn mới chỉ cần nhập đúng tên khách, hệ thống sẽ tự điền SĐT, địa chỉ và ghi chú.</p>
+      </section>
+
+      <section class="card" style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+          <h2 style="margin:0">Danh sách khách hàng <span class="badge" id="customerCount">0 khách</span></h2>
+          <div style="min-width:260px"><input id="searchCustomer" placeholder="Tìm tên / SĐT / địa chỉ..." oninput="renderCustomerManager()" /></div>
+        </div>
+        <div class="catalog-list">
+          <table>
+            <thead><tr><th>Tên khách</th><th>SĐT</th><th>Địa chỉ</th><th>Ghi chú</th><th class="center">Thao tác</th></tr></thead>
+            <tbody id="customerManagerBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="invoice" id="invoicePrint"><div class="invoice-inner"><div class="invoice-head"><div class="invoice-brand"><h1>VŨ HOÀNG LIGHTING</h1><p>Cung cấp Ray Nam Châm - Nhôm Định Hình- Nguồn 12V/24V - Đèn Trang Trí - Quạt Trần - LED 12V/24V/220V </p><p>Hotline: 08779 333 62</p></div><div class="invoice-meta"><p><strong>Mã hóa đơn:</strong> <span id="printInvoiceId"></span></p><p><strong>Ngày:</strong> <span id="printDate"></span></p><p><strong>Hình thức:</strong> Bán hàng</p></div></div><div class="invoice-title"><h2>HÓA ĐƠN BÁN HÀNG</h2><p class="small-muted">Cảm ơn quý khách đã tin tưởng và mua hàng</p></div><div class="customer-box"><div><strong>Khách hàng:</strong> <span id="printCustomerName"></span></div><div><strong>SĐT:</strong> <span id="printCustomerPhone"></span></div><div style="grid-column:1/-1"><strong>Địa chỉ:</strong> <span id="printCustomerAddress"></span></div><div style="grid-column:1/-1"><strong>Ghi chú:</strong> <span id="printNote"></span></div></div><table><thead><tr><th style="width:45px">STT</th><th style="width:90px">Mã</th><th>Tên sản phẩm</th><th style="width:70px">ĐVT</th><th style="width:60px">SL</th><th style="width:110px">Đơn giá</th><th style="width:120px">Thành tiền</th></tr></thead><tbody id="printCartBody"></tbody></table><div class="invoice-pay-area">
+<div class="bank-qr-box">
+  <div class="bank-qr-title">Quét QR thanh toán</div>
+  <div class="bank-qr-content">
+  <img id="bankQrImage" alt="QR ngân hàng" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <div class="bank-info-lines">
+    <div><strong>STK:</strong> <span id="printBankAccount"></span></div>
+    <div><strong>CTK:</strong> <span id="printBankHolder"></span></div>
+    <div><strong>Ngân hàng:</strong> <span id="printBankName"></span></div>
+  </div>
+  </div>
+</div>
+<div class="invoice-total"><div><span>Tạm tính</span><strong id="printSubtotal"></strong></div><div><span>Chiết khấu</span><strong id="printDiscount"></strong></div><div><span>Phí vận chuyển</span><strong id="printShippingFee"></strong></div><div><span>Đã thanh toán</span><strong id="printPaid"></strong></div><div><span>Còn lại</span><strong id="printDebt"></strong></div><div><span>Tổng tiền</span><strong id="printGrand"></strong></div></div>
+</div><div class="signature"><div><strong></strong><span></span></div><div><strong></strong><span></span></div></div><div class="thanks">VŨ HOÀNG LIGHTING - UY TÍN TẠO NIỀM TIN</div></div></div>
+
+  <script>
+    // ===== CONFIG SUPABASE - DÁN THÔNG TIN CỦA BẠN VÀO ĐÂY =====
+   const SUPABASE_URL = '__SUPABASE_URL__';
+    const SUPABASE_KEY = '__SUPABASE_ANON_KEY__';
+    const BANK_INFO = {
+      bankName: '__BANK_NAME__',
+      accountNo: '__BANK_ACCOUNT_NO__',
+      accountName: '__BANK_ACCOUNT_NAME__',
+      qrImage: '__BANK_QR_IMAGE__'
+    };
+    // ============================================================
+
+    const isConfigured = SUPABASE_URL.startsWith('https://') && !SUPABASE_KEY.includes('DAN_SUPABASE');
+    let db = null;
+    let currentUser = null;
+    let products = [];
+    let orders = [];
+    let customers = [];
+    let cart = [];
+    let currentInvoiceNo = '';
+
+    const formatMoney = v => Number(v || 0).toLocaleString('vi-VN') + 'đ';
+    const normalizeCode = code => String(code || '').trim().toUpperCase();
+    const status = msg => document.getElementById('loginStatus').textContent = msg;
+
+    if (!isConfigured) document.getElementById('configWarning').classList.remove('hidden');
+    if (isConfigured) db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function initAuth(){
+      if(!db) return;
+      const { data } = await db.auth.getSession();
+      if(data.session) await enterApp(data.session.user);
+      db.auth.onAuthStateChange(async (event, session)=>{ if(session?.user) await enterApp(session.user); else showLogin(); });
+    }
+
+    async function signUp(){
+      if(!db) return alert('Bạn chưa cấu hình Supabase URL và Key trong code.');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if(!email || !password) return alert('Nhập email và mật khẩu.');
+      const { error } = await db.auth.signUp({ email, password });
+      if(error) return alert(error.message);
+      alert('Đã tạo tài khoản. Nếu Supabase yêu cầu xác nhận email, hãy mở email để xác nhận rồi đăng nhập.');
+    }
+
+    async function signIn(){
+      if(!db) return alert('Bạn chưa cấu hình Supabase URL và Key trong code.');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      if(!email || !password) return alert('Nhập email và mật khẩu.');
+      status('Đang đăng nhập...');
+      const { data, error } = await db.auth.signInWithPassword({ email, password });
+      if(error){ status('Đăng nhập lỗi.'); return alert(error.message); }
+      await enterApp(data.user);
+    }
+
+    async function signOut(){ await db.auth.signOut(); showLogin(); }
+    function showLogin(){ currentUser=null; document.getElementById('loginWrap').classList.remove('hidden'); document.getElementById('mainApp').classList.add('hidden'); }
+
+    async function enterApp(user){
+      currentUser = user;
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('loginWrap').classList.add('hidden');
+      document.getElementById('mainApp').classList.remove('hidden');
+      await loadProductsOnline();
+      await loadCustomersOnline();
+      await loadOrdersOnline();
+      renderCart();
+    }
+
+    function openTab(tab){
+      ['sale','products','orders','customers'].forEach(name=>{
+        document.getElementById(name+'Page').classList.toggle('active', name===tab);
+        const btn = document.getElementById('tab'+name.charAt(0).toUpperCase()+name.slice(1)+'Btn');
+        if(btn) btn.classList.toggle('active', name===tab);
+      });
+      if(tab==='products') document.getElementById('pmCode').focus();
+      if(tab==='sale') document.getElementById('productCode').focus();
+    }
+
+
+    async function loadCustomersOnline(){
+      const { data, error } = await db.from('customers').select('*').order('name');
+      if(error) return alert('Lỗi tải khách hàng: '+error.message);
+      customers = data || [];
+      refreshCustomerList();
+      renderCustomerManager();
+    }
+
+    function normalizeText(value){
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function findCustomerByName(name){
+      const key = normalizeText(name);
+      return customers.find(c => normalizeText(c.name) === key);
+    }
+
+    function refreshCustomerList(){
+      const list = document.getElementById('customerNames');
+      if(!list) return;
+      list.innerHTML = customers.map(c => `<option value="${c.name}">${c.phone || ''} ${c.address || ''}</option>`).join('');
+    }
+
+    function fillCustomerInfoByName(){
+      const name = document.getElementById('customerName').value;
+      const customer = findCustomerByName(name);
+      if(!customer) return;
+      document.getElementById('customerPhone').value = customer.phone || '';
+      document.getElementById('customerAddress').value = customer.address || '';
+      document.getElementById('note').value = customer.note || '';
+    }
+
+    async function saveCustomerFromSale(silent){
+      const name = document.getElementById('customerName').value.trim();
+      const phone = document.getElementById('customerPhone').value.trim();
+      const address = document.getElementById('customerAddress').value.trim();
+      const note = document.getElementById('note').value.trim();
+
+      if(!name){
+        if(!silent) alert('Bạn chưa nhập tên khách hàng.');
+        return null;
+      }
+
+      const existing = findCustomerByName(name);
+      let result;
+      if(existing){
+        result = await db.from('customers').update({ name, phone, address, note }).eq('id', existing.id);
+      }else{
+        result = await db.from('customers').insert({ name, phone, address, note });
+      }
+
+      if(result.error){
+        if(!silent) alert('Lỗi lưu khách hàng: '+result.error.message);
+        return null;
+      }
+
+      await loadCustomersOnline();
+      if(!silent) alert('Đã lưu thông tin khách hàng.');
+      return true;
+    }
+
+    async function saveCustomerOnline(){
+      const id = document.getElementById('editingCustomerId').value;
+      const item = {
+        name: document.getElementById('cmName').value.trim(),
+        phone: document.getElementById('cmPhone').value.trim(),
+        address: document.getElementById('cmAddress').value.trim(),
+        note: document.getElementById('cmNote').value.trim()
+      };
+
+      if(!item.name) return alert('Bạn chưa nhập tên khách hàng.');
+
+      let result;
+      if(id) result = await db.from('customers').update(item).eq('id', id);
+      else {
+        const existing = findCustomerByName(item.name);
+        if(existing) return alert('Tên khách hàng này đã có. Bấm Sửa ở danh sách bên dưới để cập nhật.');
+        result = await db.from('customers').insert(item);
+      }
+
+      if(result.error) return alert('Lỗi lưu khách hàng: '+result.error.message);
+
+      resetCustomerForm();
+      await loadCustomersOnline();
+      alert('Đã lưu khách hàng.');
+    }
+
+    function renderCustomerManager(){
+      const body = document.getElementById('customerManagerBody');
+      const count = document.getElementById('customerCount');
+      if(!body || !count) return;
+
+      const keyword = normalizeText(document.getElementById('searchCustomer')?.value || '');
+      const filtered = customers.filter(c => normalizeText((c.name||'')+' '+(c.phone||'')+' '+(c.address||'')+' '+(c.note||'')).includes(keyword));
+
+      count.textContent = customers.length + ' khách';
+
+      if(!filtered.length){
+        body.innerHTML = '<tr><td colspan="5" class="empty">Chưa có khách hàng</td></tr>';
+        return;
+      }
+
+      body.innerHTML = filtered.map(c => `<tr>
+        <td><strong>${c.name || ''}</strong></td>
+        <td>${c.phone || ''}</td>
+        <td>${c.address || ''}</td>
+        <td>${c.note || ''}</td>
+        <td class="center">
+          <button class="btn-success" onclick="useCustomer('${c.id}')" style="padding:8px 10px">Dùng</button>
+          <button class="btn-blue" onclick="editCustomer('${c.id}')" style="padding:8px 10px">Sửa</button>
+          <button class="btn-danger" onclick="deleteCustomer('${c.id}')" style="padding:8px 10px">Xóa</button>
+        </td>
+      </tr>`).join('');
+    }
+
+    function resetCustomerForm(){
+      document.getElementById('editingCustomerId').value = '';
+      document.getElementById('cmName').value = '';
+      document.getElementById('cmPhone').value = '';
+      document.getElementById('cmAddress').value = '';
+      document.getElementById('cmNote').value = '';
+      document.getElementById('saveCustomerBtn').textContent = 'Lưu khách hàng';
+    }
+
+    function editCustomer(id){
+      const c = customers.find(x => x.id === id);
+      if(!c) return;
+      document.getElementById('editingCustomerId').value = c.id;
+      document.getElementById('cmName').value = c.name || '';
+      document.getElementById('cmPhone').value = c.phone || '';
+      document.getElementById('cmAddress').value = c.address || '';
+      document.getElementById('cmNote').value = c.note || '';
+      document.getElementById('saveCustomerBtn').textContent = 'Cập nhật khách hàng';
+      openTab('customers');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function useCustomer(id){
+      const c = customers.find(x => x.id === id);
+      if(!c) return;
+      document.getElementById('customerName').value = c.name || '';
+      document.getElementById('customerPhone').value = c.phone || '';
+      document.getElementById('customerAddress').value = c.address || '';
+      document.getElementById('note').value = c.note || '';
+      openTab('sale');
+    }
+
+    async function deleteCustomer(id){
+      const c = customers.find(x => x.id === id);
+      if(!c) return;
+      if(!confirm('Xóa khách hàng '+c.name+'?')) return;
+      const { error } = await db.from('customers').delete().eq('id', id);
+      if(error) return alert('Lỗi xóa khách hàng: '+error.message);
+      await loadCustomersOnline();
+      resetCustomerForm();
+    }
+
+
+    async function loadProductsOnline(){
+      const { data, error } = await db.from('products').select('*').order('code');
+      if(error) return alert('Lỗi tải sản phẩm: '+error.message);
+      products = data || [];
+      refreshProductCodeList(); renderProductManager();
+    }
+
+    function findProduct(code){ return products.find(p => p.code === normalizeCode(code)); }
+    function refreshProductCodeList(){ document.getElementById('productCodes').innerHTML = products.map(p=>`<option value="${p.code}">${p.name}</option>`).join(''); }
+
+    function renderProductManager(){
+      const keyword = normalizeCode(document.getElementById('searchProduct').value);
+      const filtered = products.filter(p => normalizeCode(p.code+' '+p.name+' '+p.unit).includes(keyword));
+      document.getElementById('productCount').textContent = products.length + ' sản phẩm';
+      const body = document.getElementById('productManagerBody');
+      if(!filtered.length){ body.innerHTML = '<tr><td colspan="5" class="empty">Không có sản phẩm</td></tr>'; return; }
+      body.innerHTML = filtered.map(p=>`<tr><td><strong>${p.code}</strong></td><td>${p.name}</td><td>${p.unit}</td><td class="right">${formatMoney(p.price)}</td><td class="center"><button class="btn-blue" onclick="editProduct('${p.id}')" style="padding:8px 10px">Sửa</button> <button class="btn-danger" onclick="deleteProduct('${p.id}')" style="padding:8px 10px">Xóa</button></td></tr>`).join('');
+    }
+
+    async function saveProductOnline(){
+      const id = document.getElementById('editingProductId').value;
+      const item = { code: normalizeCode(document.getElementById('pmCode').value), name: document.getElementById('pmName').value.trim(), unit: document.getElementById('pmUnit').value.trim() || 'Cái', price: Number(document.getElementById('pmPrice').value || 0) };
+      if(!item.code) return alert('Bạn chưa nhập mã sản phẩm.');
+      if(!item.name) return alert('Bạn chưa nhập tên sản phẩm.');
+      if(item.price <= 0) return alert('Giá bán phải lớn hơn 0.');
+      let result;
+      if(id) result = await db.from('products').update(item).eq('id', id);
+      else result = await db.from('products').insert(item);
+      if(result.error) return alert('Lỗi lưu sản phẩm: '+result.error.message);
+      resetProductForm(); await loadProductsOnline(); alert('Đã lưu sản phẩm online.');
+    }
+
+    function editProduct(id){
+      const p = products.find(x=>x.id===id); if(!p) return;
+      document.getElementById('editingProductId').value = p.id;
+      document.getElementById('pmCode').value = p.code; document.getElementById('pmName').value = p.name; document.getElementById('pmUnit').value = p.unit; document.getElementById('pmPrice').value = p.price;
+      document.getElementById('saveProductBtn').textContent = 'Cập nhật sản phẩm online'; window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    async function deleteProduct(id){
+      const p = products.find(x=>x.id===id); if(!p) return;
+      if(!confirm('Xóa sản phẩm '+p.code+' - '+p.name+'?')) return;
+      const { error } = await db.from('products').delete().eq('id', id);
+      if(error) return alert('Lỗi xóa sản phẩm: '+error.message);
+      await loadProductsOnline();
+    }
+
+    function resetProductForm(){
+      document.getElementById('editingProductId').value=''; document.getElementById('pmCode').value=''; document.getElementById('pmName').value=''; document.getElementById('pmUnit').value=''; document.getElementById('pmPrice').value=''; document.getElementById('saveProductBtn').textContent='Lưu sản phẩm online';
+    }
+
+    function addProductToCart(){
+      const code = normalizeCode(document.getElementById('productCode').value); const qty = Number(document.getElementById('quantity').value || 1); const custom = document.getElementById('customPrice').value; const product = findProduct(code);
+      if(!code) return alert('Bạn chưa nhập mã sản phẩm.');
+      if(!product){ if(confirm('Không tìm thấy mã. Sang Quản lý sản phẩm để thêm?')){ openTab('products'); document.getElementById('pmCode').value=code; } return; }
+      if(qty <= 0) return alert('Số lượng phải lớn hơn 0.');
+      const price = custom === '' ? Number(product.price) : Number(custom); const existed = cart.find(i => i.code===code && i.price===price);
+      if(existed) existed.quantity += qty; else cart.push({ code:product.code, name:product.name, unit:product.unit, quantity:qty, price });
+      clearProductInput(); renderCart(); document.getElementById('productCode').focus();
+    }
+
+    function clearProductInput(){ document.getElementById('productCode').value=''; document.getElementById('quantity').value=1; document.getElementById('customPrice').value=''; }
+    function removeItem(i){ cart.splice(i,1); renderCart(); }
+    function updateItem(i, field, value){ cart[i][field] = Math.max(Number(value || 0),0); renderCart(); }
+    function getTotals(){ const subtotal=cart.reduce((s,i)=>s+i.quantity*i.price,0); const discount=Number(document.getElementById('discount').value||0); const shippingFee=Number(document.getElementById('shippingFee').value||0); const paid=Number(document.getElementById('paid').value||0); const grand=Math.max(subtotal-discount+shippingFee,0); const debt=Math.max(grand-paid,0); return {subtotal,discount,shippingFee,paid,grand,debt}; }
+
+    function renderCart(){
+      const body=document.getElementById('cartBody');
+      if(!cart.length) body.innerHTML='<tr><td colspan="8" class="empty">Chưa có sản phẩm</td></tr>'; else body.innerHTML=cart.map((i,idx)=>`<tr><td>${idx+1}</td><td><strong>${i.code}</strong></td><td>${i.name}</td><td>${i.unit}</td><td class="right"><input type="number" min="0" value="${i.quantity}" oninput="updateItem(${idx},'quantity',this.value)" style="width:76px;text-align:right"></td><td class="right"><input type="number" min="0" value="${i.price}" oninput="updateItem(${idx},'price',this.value)" style="width:112px;text-align:right"></td><td class="right"><strong>${formatMoney(i.quantity*i.price)}</strong></td><td class="center"><button class="btn-danger" onclick="removeItem(${idx})" style="padding:8px 10px">Xóa</button></td></tr>`).join('');
+      const t=getTotals(); ['subtotal','discount','shippingFee','paid','debt','grand'].forEach(k=>document.getElementById(k+'Text').textContent=formatMoney(t[k])); document.getElementById('remainPreview').value=formatMoney(t.debt);
+    }
+
+    function makeInvoiceNo(){ const d=new Date(); return 'VH'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0')+'-'+String(d.getHours()).padStart(2,'0')+String(d.getMinutes()).padStart(2,'0')+String(d.getSeconds()).padStart(2,'0'); }
+
+    async function saveOrderOnline(){
+      if(!cart.length) return alert('Hóa đơn chưa có sản phẩm.');
+      await saveCustomerFromSale(true);
+      const t=getTotals(); const invoice_no = currentInvoiceNo || makeInvoiceNo();
+      const order = { invoice_no, customer_name:document.getElementById('customerName').value.trim(), customer_phone:document.getElementById('customerPhone').value.trim(), customer_address:document.getElementById('customerAddress').value.trim(), note:document.getElementById('note').value.trim(), subtotal:t.subtotal, discount:t.discount, shipping_fee:t.shippingFee, paid:t.paid, grand:t.grand, debt:t.debt };
+      const { data, error } = await db.from('orders').insert(order).select().single();
+      if(error) return alert('Lỗi lưu đơn: '+error.message);
+      const items = cart.map(i=>({ order_id:data.id, code:i.code, name:i.name, unit:i.unit, quantity:i.quantity, price:i.price, total:i.quantity*i.price }));
+      const itemResult = await db.from('order_items').insert(items);
+      if(itemResult.error) return alert('Đơn đã lưu nhưng lỗi lưu sản phẩm trong đơn: '+itemResult.error.message);
+      currentInvoiceNo = invoice_no; await loadOrdersOnline(); alert('Đã lưu đơn online: '+invoice_no);
+    }
+
+    async function loadOrdersOnline(){
+      const { data, error } = await db.from('orders').select('*').order('created_at', { ascending:false }).limit(100);
+      if(error) return alert('Lỗi tải đơn hàng: '+error.message);
+      orders = data || []; renderOrders();
+    }
+
+    function renderOrders(){
+      document.getElementById('orderCount').textContent = orders.length + ' đơn'; const body=document.getElementById('ordersBody');
+      if(!orders.length){ body.innerHTML='<tr><td colspan="7" class="empty">Chưa có đơn hàng</td></tr>'; return; }
+      body.innerHTML=orders.map(o=>`<tr><td><strong>${o.invoice_no}</strong></td><td>${new Date(o.created_at).toLocaleDateString('vi-VN')}</td><td>${o.customer_name||''}</td><td>${o.customer_phone||''}</td><td class="right">${formatMoney(o.grand)}</td><td class="right">${formatMoney(o.debt)}</td><td class="center"><button class="btn-blue" onclick="openOrder('${o.id}')" style="padding:8px 10px">Mở lại</button></td></tr>`).join('');
+    }
+
+    async function openOrder(id){
+      const order = orders.find(o=>o.id===id); if(!order) return;
+      const { data, error } = await db.from('order_items').select('*').eq('order_id', id).order('created_at');
+      if(error) return alert('Lỗi mở đơn: '+error.message);
+      document.getElementById('customerName').value=order.customer_name||''; document.getElementById('customerPhone').value=order.customer_phone||''; document.getElementById('customerAddress').value=order.customer_address||''; document.getElementById('note').value=order.note||''; document.getElementById('discount').value=order.discount||0; document.getElementById('shippingFee').value=order.shipping_fee||0; document.getElementById('paid').value=order.paid||0; currentInvoiceNo=order.invoice_no;
+      cart=(data||[]).map(i=>({code:i.code,name:i.name,unit:i.unit,quantity:Number(i.quantity),price:Number(i.price)})); renderCart(); openTab('sale');
+    }
+
+    function preparePrintInvoice(){
+      const t=getTotals(); const now=new Date(); const invoiceNo=currentInvoiceNo || makeInvoiceNo(); currentInvoiceNo=invoiceNo;
+      document.getElementById('printInvoiceId').textContent=invoiceNo; document.getElementById('printDate').textContent=now.toLocaleDateString('vi-VN')+' '+now.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}); document.getElementById('printCustomerName').textContent=document.getElementById('customerName').value||'................................'; document.getElementById('printCustomerPhone').textContent=document.getElementById('customerPhone').value||'................................'; document.getElementById('printCustomerAddress').textContent=document.getElementById('customerAddress').value||'................................'; document.getElementById('printNote').textContent=document.getElementById('note').value||'';
+      document.getElementById('printBankAccount').textContent = BANK_INFO.accountNo; document.getElementById('printBankHolder').textContent = BANK_INFO.accountName; document.getElementById('printBankName').textContent = BANK_INFO.bankName; document.getElementById('bankQrImage').src = BANK_INFO.qrImage;
+      document.getElementById('printCartBody').innerHTML=cart.map((i,idx)=>`<tr><td class="center">${idx+1}</td><td>${i.code}</td><td>${i.name}</td><td class="center">${i.unit}</td><td class="right">${i.quantity}</td><td class="right">${formatMoney(i.price)}</td><td class="right"><strong>${formatMoney(i.quantity*i.price)}</strong></td></tr>`).join('');
+      ['subtotal','discount','shippingFee','paid','debt','grand'].forEach(k=>document.getElementById('print'+k.charAt(0).toUpperCase()+k.slice(1)).textContent=formatMoney(t[k]));
+    }
+
+    function printInvoice(){ if(!cart.length) return alert('Hóa đơn chưa có sản phẩm.'); preparePrintInvoice(); window.print(); }
+    function newOrder(){ if(!confirm('Tạo đơn mới?')) return; ['customerName','customerPhone','customerAddress','note'].forEach(id=>document.getElementById(id).value=''); document.getElementById('discount').value=0; document.getElementById('shippingFee').value=0; document.getElementById('paid').value=0; cart=[]; currentInvoiceNo=''; clearProductInput(); renderCart(); }
+
+    document.getElementById('customerName').addEventListener('change', fillCustomerInfoByName);
+    document.getElementById('customerName').addEventListener('blur', fillCustomerInfoByName);
+    document.getElementById('productCode').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); addProductToCart(); } });
+    document.getElementById('pmPrice').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); saveProductOnline(); } });
+    initAuth();
+  </script>
+</body>
+</html>
