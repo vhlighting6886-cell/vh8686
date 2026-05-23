@@ -1,0 +1,13 @@
+{
+  "name": "vu-hoang-lighting-pos",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js && npx serve public -l 3000",
+    "preview": "npx serve public -l 3000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
