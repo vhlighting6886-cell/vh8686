@@ -105,20 +105,17 @@
       font-weight:700 !important;
     }
     .invoice table th:nth-child(1),
-    .invoice table td:nth-child(1){width:8mm !important;text-align:center !important;}
+    .invoice table td:nth-child(1){width:9mm !important;text-align:center !important;}
     .invoice table th:nth-child(2),
-    .invoice table td:nth-child(2){width:18mm !important;text-align:center !important;font-weight:700 !important;}
-    .invoice table th:nth-child(3),
-    .invoice table td:nth-child(3){width:auto !important;}
+    .invoice table td:nth-child(2){width:18mm !important;}
     .invoice table th:nth-child(4),
-    .invoice table td:nth-child(4){width:10mm !important;text-align:center !important;}
+    .invoice table td:nth-child(4){width:12mm !important;text-align:center !important;}
     .invoice table th:nth-child(5),
-    .invoice table td:nth-child(5){width:9mm !important;text-align:center !important;}
+    .invoice table td:nth-child(5){width:10mm !important;text-align:right !important;}
     .invoice table th:nth-child(6),
-    .invoice table td:nth-child(6){width:18mm !important;text-align:right !important;}
+    .invoice table td:nth-child(6){width:20mm !important;text-align:right !important;}
     .invoice table th:nth-child(7),
-    .invoice table td:nth-child(7){width:20mm !important;text-align:right !important;}
-    .invoice-product-name{white-space:normal !important;word-break:normal !important;overflow-wrap:break-word !important;}
+    .invoice table td:nth-child(7){width:24mm !important;text-align:right !important;}
     .invoice-pay-area{
       display:grid !important;
       grid-template-columns:1fr 60mm !important;
@@ -277,7 +274,7 @@
           <div class="full"><label>Địa chỉ</label><input id="customerAddress" placeholder="Địa chỉ giao hàng" /></div>
           <div class="full"><label>Ghi chú</label><textarea id="note" placeholder="Ví dụ: giao trong ngày, khách chuyển khoản..."></textarea></div>
           <div class="customer-actions"><button class="btn-success" onclick="saveCustomerFromSale(false)">Lưu thông tin khách</button><button class="btn-blue" onclick="openTab('customers')">Quản lý khách hàng</button></div>
-          <h2>2. Nhập mã sản phẩm <span class="badge">BẢN PDF ĐẸP</span></h2>
+          <h2>2. Nhập mã sản phẩm <span class="badge">BẢN GOM NHÓM GỌN</span></h2>
           <div class="notice"><strong>Online:</strong> sản phẩm được lấy từ Supabase. Thêm sản phẩm ở mục Quản lý sản phẩm, máy tính và điện thoại đều dùng chung.</div>
           <div class="form-row-3"><div><label>Nhập nhóm sản phẩm</label><input id="productCode" placeholder="VD: 220V / RNCC" list="productCodes" oninput="refreshSaleProductChoices()" /><datalist id="productCodes"></datalist></div><div><label>Số lượng</label><input id="quantity" type="text" inputmode="numeric" autocomplete="off" value="1" /></div><div><label>Giá tùy chỉnh</label><input id="customPrice" type="text" inputmode="numeric" autocomplete="off" placeholder="Bỏ trống nếu lấy giá sẵn" /></div></div>
           <div class="btns"><button class="btn-primary" onclick="addProductToCart()">+ Thêm vào hóa đơn</button><button class="btn-light" onclick="clearProductInput()">Xóa ô nhập</button><button class="btn-blue" onclick="openTab('products')">+ Thêm sản phẩm vào nhóm</button></div>
@@ -339,7 +336,8 @@
 <div class="bank-qr-box">
   <div class="bank-qr-title">Quét QR thanh toán</div>
   <div class="bank-qr-content">
-  <img id="bankQrImage" alt="QR ngân hàng" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <img id="bankQrImage" alt="QR ngân hàng" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.style.display='none';document.getElementById('qrFallback').style.display='block';" />
+  <div id="qrFallback" style="display:none;font-size:11px;line-height:1.4">QR lỗi tải.<br>Chuyển khoản STK: 5577626198<br>VP BANK</div>
   <div class="bank-info-lines">
     <div><strong>STK:</strong> <span id="printBankAccount"></span></div>
     <div><strong>CTK:</strong> <span id="printBankHolder"></span></div>
@@ -358,7 +356,7 @@
       bankName: 'VP BANK',
       accountNo: '5577626198',
       accountName: 'HKD HOANG VU LIGHTING',
-      qrImage: 'qr.jpg'
+      qrImage: 'https://img.vietqr.io/image/VPB-5577626198-compact2.png?accountName=HKD%20HOANG%20VU%20LIGHTING'
     };
     // ============================================================
 
@@ -710,7 +708,7 @@
       const price = custom === '' ? Number(product.price) : parseNumberVN(custom);
       const code = product.code || makeProductCode(productGroup(product), product.name);
       const existed = cart.find(i => i.code===code && i.price===price);
-      if(existed) existed.quantity += qty; else cart.push({ code: productGroup(product) || code, group_name: productGroup(product) || '', name: product.name || productLabel(product), unit: product.unit, quantity: qty, price });
+      if(existed) existed.quantity += qty; else cart.push({ code, name:productLabel(product), unit:product.unit, quantity:qty, price });
       renderCart(); document.getElementById('productCode').focus();
     }
 
@@ -763,13 +761,8 @@
     function preparePrintInvoice(){
       const t=getTotals(); const now=new Date(); const invoiceNo=currentInvoiceNo || makeInvoiceNo(); currentInvoiceNo=invoiceNo;
       document.getElementById('printInvoiceId').textContent=invoiceNo; document.getElementById('printDate').textContent=now.toLocaleDateString('vi-VN')+' '+now.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'}); document.getElementById('printCustomerName').textContent=document.getElementById('customerName').value||'................................'; document.getElementById('printCustomerPhone').textContent=document.getElementById('customerPhone').value||'................................'; document.getElementById('printCustomerAddress').textContent=document.getElementById('customerAddress').value||'................................'; document.getElementById('printNote').textContent=document.getElementById('note').value||'';
-      document.getElementById('printBankAccount').textContent = BANK_INFO.accountNo; document.getElementById('printBankHolder').textContent = BANK_INFO.accountName; document.getElementById('printBankName').textContent = BANK_INFO.bankName; document.getElementById('bankQrImage').src = BANK_INFO.qrImage || '';
-      document.getElementById('printCartBody').innerHTML = cart.map((i, idx) => {
-        const printCode = escapeHtml(i.group_name || i.code || '');
-        const printName = escapeHtml(i.name || '');
-        const printUnit = escapeHtml(i.unit || '');
-        return `<tr><td class="center">${idx + 1}</td><td>${printCode}</td><td class="invoice-product-name">${printName}</td><td class="center">${printUnit}</td><td class="center">${i.quantity}</td><td class="right">${formatMoney(i.price)}</td><td class="right"><strong>${formatMoney(i.quantity * i.price)}</strong></td></tr>`;
-      }).join('');
+      document.getElementById('printBankAccount').textContent = BANK_INFO.accountNo; document.getElementById('printBankHolder').textContent = BANK_INFO.accountName; document.getElementById('printBankName').textContent = BANK_INFO.bankName; document.getElementById('bankQrImage').src = BANK_INFO.qrImage;
+      document.getElementById('printCartBody').innerHTML=cart.map((i,idx)=>`<tr><td class="center">${idx+1}</td><td>${i.code}</td><td>${i.name}</td><td class="center">${i.unit}</td><td class="right">${i.quantity}</td><td class="right">${formatMoney(i.price)}</td><td class="right"><strong>${formatMoney(i.quantity*i.price)}</strong></td></tr>`).join('');
       ['subtotal','discount','shippingFee','paid','debt','grand'].forEach(k=>document.getElementById('print'+k.charAt(0).toUpperCase()+k.slice(1)).textContent=formatMoney(t[k]));
     }
 
