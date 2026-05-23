@@ -1,13 +1,16 @@
-BẢN GOM NHÓM V2 - ĐÚNG GIAO DIỆN MỚI
+BẢN ĐÃ TÁCH RIÊNG - GOM NHÓM SẢN PHẨM
 
-Dấu hiệu nhận biết đã deploy đúng:
-- Trong Bán hàng nhanh sẽ thấy dòng: "2. Chọn sản phẩm theo nhóm" và badge "BẢN GOM NHÓM V2".
-- Không còn nút màu cam "+ Thêm vào hóa đơn" ở phần nhập nhóm.
-- Ô nhập là "Nhập nhóm sản phẩm", không phải "Mã sản phẩm".
-- Gõ RNCC/220V sẽ hiện danh sách sản phẩm bên dưới, bấm "Thêm" từng sản phẩm.
+1. Code app nằm ở: public/index.html
+2. SQL tạo mới sạch nằm ở: database/supabase_schema.sql
+3. SQL sửa database đang dùng, không xóa dữ liệu: database/PATCH_KHONG_XOA_DU_LIEU_PRODUCTS_GOM_NHOM.sql
 
-Cách deploy:
-1. Xóa hoặc ghi đè TOÀN BỘ repo cũ bằng thư mục này.
-2. Git commit/push lên GitHub.
-3. Vercel > Deployments > Redeploy > chọn Clear Build Cache.
-4. Mở link bằng tab ẩn danh để tránh cache trình duyệt.
+Cách làm khuyến nghị:
+- Nếu database đang có sản phẩm: chạy file PATCH_KHONG_XOA_DU_LIEU_PRODUCTS_GOM_NHOM.sql
+- Sau đó upload toàn bộ thư mục này lên GitHub.
+- Vercel Redeploy và bật Clear Build Cache.
+
+Logic mới:
+- Sản phẩm không unique theo mã nữa.
+- Sản phẩm unique theo Nhóm sản phẩm + Tên sản phẩm.
+- Nhập trùng nhóm + tên sẽ tự cập nhật ĐVT/Giá bán, không báo duplicate.
+- Bán hàng nhanh: gõ nhóm sản phẩm, hệ thống hiện các sản phẩm thuộc nhóm để bấm Thêm.

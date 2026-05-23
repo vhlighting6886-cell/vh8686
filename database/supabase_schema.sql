@@ -8,7 +8,7 @@ create extension if not exists "pgcrypto";
 create table products (
   id uuid primary key default gen_random_uuid(),
   group_name text not null default '',
-  code text not null unique,
+  code text,
   name text not null,
   unit text default 'CÁI',
   price numeric default 0,
@@ -56,6 +56,8 @@ alter table products enable row level security;
 alter table customers enable row level security;
 alter table orders enable row level security;
 alter table order_items enable row level security;
+
+alter table products add constraint products_group_name_name_unique unique (group_name, name);
 
 create policy "products_all_authenticated" on products for all to authenticated using (true) with check (true);
 create policy "customers_all_authenticated" on customers for all to authenticated using (true) with check (true);

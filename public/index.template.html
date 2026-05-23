@@ -276,7 +276,7 @@
           <div class="customer-actions"><button class="btn-success" onclick="saveCustomerFromSale(false)">Lưu thông tin khách</button><button class="btn-blue" onclick="openTab('customers')">Quản lý khách hàng</button></div>
           <h2>2. Chọn sản phẩm theo nhóm <span class="badge">BẢN GOM NHÓM V2</span></h2>
           <div class="notice"><strong>Cách dùng:</strong> gõ hoặc chọn nhóm sản phẩm, ví dụ RNCC / 220V. Hệ thống sẽ hiện các sản phẩm trong nhóm, bạn bấm <strong>Thêm</strong> ở dòng cần bán.</div>
-          <div class="form-row-3"><div><label>Nhập nhóm sản phẩm</label><input id="productCode" placeholder="VD: RNCC / 220V" list="productGroups" oninput="refreshSaleProductChoices()" /><datalist id="productGroups"></datalist></div><div><label>Số lượng</label><input id="quantity" type="number" min="1" value="1" /></div><div><label>Giá tùy chỉnh</label><input id="customPrice" type="number" min="0" placeholder="Bỏ trống nếu lấy giá sẵn" /></div></div>
+          <div class="form-row-3"><div><label>Nhập nhóm sản phẩm</label><input id="productCode" placeholder="VD: RNCC / 220V" list="productGroups" oninput="refreshSaleProductChoices()" /><datalist id="productGroups"></datalist></div><div><label>Số lượng</label><input id="quantity" type="text" inputmode="numeric" value="1" onkeydown="if(event.key==='Enter'){event.preventDefault(); addProductToCart();}" /></div><div><label>Giá tùy chỉnh</label><input id="customPrice" type="text" inputmode="numeric" placeholder="Bỏ trống nếu lấy giá sẵn" onkeydown="if(event.key==='Enter'){event.preventDefault(); addProductToCart();}" /></div></div>
           <div class="btns"><button class="btn-light" onclick="clearProductInput()">Xóa ô nhập</button><button class="btn-blue" onclick="openTab('products')">+ Thêm sản phẩm vào nhóm</button></div>
           <div id="saleProductResults" class="sale-product-results"></div>
           <p class="hint">Mẹo: nhập nhóm rồi chọn đúng tên sản phẩm bên dưới. Nếu chỉ có 1 sản phẩm khớp, bấm Enter để thêm nhanh.</p>
@@ -285,7 +285,7 @@
         <section class="card">
           <h2>3. Hóa đơn bán hàng</h2>
           <div class="table-wrap"><table><thead><tr><th>STT</th><th>Mã nội bộ</th><th>Sản phẩm</th><th>ĐVT</th><th class="right">SL</th><th class="right">Đơn giá</th><th class="right">Thành tiền</th><th></th></tr></thead><tbody id="cartBody"><tr><td colspan="8" class="empty">Chưa có sản phẩm</td></tr></tbody></table></div>
-          <div class="total-box"><div><div class="form-row"><div><label>Chiết khấu</label><input id="discount" type="number" min="0" value="0" oninput="renderCart()" /></div><div><label>Phí vận chuyển</label><input id="shippingFee" type="number" min="0" value="0" oninput="renderCart()" /></div></div><div class="form-row"><div><label>Đã thanh toán</label><input id="paid" type="number" min="0" value="0" oninput="renderCart()" /></div><div><label>Còn phải thu</label><input id="remainPreview" type="text" readonly value="0đ" /></div></div><div class="btns"><button class="btn-success" onclick="saveOrderOnline()">Lưu đơn online</button><button class="btn-dark" onclick="printInvoice()">In / Lưu PDF</button><button class="btn-danger" onclick="newOrder()">Tạo đơn mới</button></div><p class="hint">Nên bấm <strong>Lưu đơn online</strong> trước, sau đó in hoặc lưu PDF gửi khách.</p></div><div class="summary"><div class="sum-line"><span>Tạm tính</span><strong id="subtotalText">0đ</strong></div><div class="sum-line"><span>Chiết khấu</span><strong id="discountText">0đ</strong></div><div class="sum-line"><span>Phí vận chuyển</span><strong id="shippingFeeText">0đ</strong></div><div class="sum-line"><span>Đã thanh toán</span><strong id="paidText">0đ</strong></div><div class="sum-line"><span>Còn lại</span><strong id="debtText">0đ</strong></div><div class="sum-line"><span>Tổng tiền</span><strong id="grandText">0đ</strong></div></div></div>
+          <div class="total-box"><div><div class="form-row"><div><label>Chiết khấu</label><input id="discount" type="text" inputmode="numeric" value="0" onchange="renderCart()" onkeydown="if(event.key==='Enter') this.blur()" /></div><div><label>Phí vận chuyển</label><input id="shippingFee" type="text" inputmode="numeric" value="0" onchange="renderCart()" onkeydown="if(event.key==='Enter') this.blur()" /></div></div><div class="form-row"><div><label>Đã thanh toán</label><input id="paid" type="text" inputmode="numeric" value="0" onchange="renderCart()" onkeydown="if(event.key==='Enter') this.blur()" /></div><div><label>Còn phải thu</label><input id="remainPreview" type="text" readonly value="0đ" /></div></div><div class="btns"><button class="btn-success" onclick="saveOrderOnline()">Lưu đơn online</button><button class="btn-dark" onclick="printInvoice()">In / Lưu PDF</button><button class="btn-danger" onclick="newOrder()">Tạo đơn mới</button></div><p class="hint">Nên bấm <strong>Lưu đơn online</strong> trước, sau đó in hoặc lưu PDF gửi khách.</p></div><div class="summary"><div class="sum-line"><span>Tạm tính</span><strong id="subtotalText">0đ</strong></div><div class="sum-line"><span>Chiết khấu</span><strong id="discountText">0đ</strong></div><div class="sum-line"><span>Phí vận chuyển</span><strong id="shippingFeeText">0đ</strong></div><div class="sum-line"><span>Đã thanh toán</span><strong id="paidText">0đ</strong></div><div class="sum-line"><span>Còn lại</span><strong id="debtText">0đ</strong></div><div class="sum-line"><span>Tổng tiền</span><strong id="grandText">0đ</strong></div></div></div>
         </section>
       </div>
     </main>
@@ -369,6 +369,8 @@
     let currentInvoiceNo = '';
 
     const formatMoney = v => Number(v || 0).toLocaleString('vi-VN') + 'đ';
+    const parseNumberVN = value => Number(String(value ?? '').replace(/[^0-9]/g, '')) || 0;
+    const formatPlainNumber = v => String(Number(v || 0));
     const normalizeCode = code => String(code || '').trim().toUpperCase();
     const status = msg => document.getElementById('loginStatus').textContent = msg;
 
@@ -711,12 +713,12 @@
     }
 
     function addProductToCartById(productId){
-      const qty = Number(document.getElementById('quantity').value || 1);
+      const qty = parseNumberVN(document.getElementById('quantity').value || 1);
       const custom = document.getElementById('customPrice').value;
       const product = findProductById(productId);
       if(!product) return alert('Không tìm thấy sản phẩm. Hãy tải lại dữ liệu.');
       if(qty <= 0) return alert('Số lượng phải lớn hơn 0.');
-      const price = custom === '' ? Number(product.price) : Number(custom);
+      const price = String(custom || '').trim() === '' ? Number(product.price) : parseNumberVN(custom);
       const code = product.code || makeProductCode(product.group_name, product.name);
       const existed = cart.find(i => i.code===code && i.price===price);
       if(existed) existed.quantity += qty;
@@ -727,12 +729,18 @@
 
     function clearProductInput(){ document.getElementById('productCode').value=''; document.getElementById('quantity').value=1; document.getElementById('customPrice').value=''; refreshSaleProductChoices(); }
     function removeItem(i){ cart.splice(i,1); renderCart(); }
-    function updateItem(i, field, value){ cart[i][field] = Math.max(Number(value || 0),0); renderCart(); }
-    function getTotals(){ const subtotal=cart.reduce((s,i)=>s+i.quantity*i.price,0); const discount=Number(document.getElementById('discount').value||0); const shippingFee=Number(document.getElementById('shippingFee').value||0); const paid=Number(document.getElementById('paid').value||0); const grand=Math.max(subtotal-discount+shippingFee,0); const debt=Math.max(grand-paid,0); return {subtotal,discount,shippingFee,paid,grand,debt}; }
+    function updateItem(i, field, value){
+      cart[i][field] = Math.max(parseNumberVN(value), 0);
+      renderCart();
+    }
+    function commitCartInput(idx, field, input){
+      updateItem(idx, field, input.value);
+    }
+    function getTotals(){ const subtotal=cart.reduce((s,i)=>s+i.quantity*i.price,0); const discount=parseNumberVN(document.getElementById('discount').value||0); const shippingFee=parseNumberVN(document.getElementById('shippingFee').value||0); const paid=parseNumberVN(document.getElementById('paid').value||0); const grand=Math.max(subtotal-discount+shippingFee,0); const debt=Math.max(grand-paid,0); return {subtotal,discount,shippingFee,paid,grand,debt}; }
 
     function renderCart(){
       const body=document.getElementById('cartBody');
-      if(!cart.length) body.innerHTML='<tr><td colspan="8" class="empty">Chưa có sản phẩm</td></tr>'; else body.innerHTML=cart.map((i,idx)=>`<tr><td>${idx+1}</td><td><strong>${i.code}</strong></td><td>${i.name}</td><td>${i.unit}</td><td class="right"><input type="number" min="0" value="${i.quantity}" oninput="updateItem(${idx},'quantity',this.value)" style="width:76px;text-align:right"></td><td class="right"><input type="number" min="0" value="${i.price}" oninput="updateItem(${idx},'price',this.value)" style="width:112px;text-align:right"></td><td class="right"><strong>${formatMoney(i.quantity*i.price)}</strong></td><td class="center"><button class="btn-danger" onclick="removeItem(${idx})" style="padding:8px 10px">Xóa</button></td></tr>`).join('');
+      if(!cart.length) body.innerHTML='<tr><td colspan="8" class="empty">Chưa có sản phẩm</td></tr>'; else body.innerHTML=cart.map((i,idx)=>`<tr><td>${idx+1}</td><td><strong>${i.code}</strong></td><td>${i.name}</td><td>${i.unit}</td><td class="right"><input type="text" inputmode="numeric" value="${i.quantity}" onchange="commitCartInput(${idx},'quantity',this)" onkeydown="if(event.key==='Enter') this.blur()" style="width:76px;text-align:right"></td><td class="right"><input type="text" inputmode="numeric" value="${formatPlainNumber(i.price)}" onchange="commitCartInput(${idx},'price',this)" onkeydown="if(event.key==='Enter') this.blur()" style="width:112px;text-align:right"></td><td class="right"><strong>${formatMoney(i.quantity*i.price)}</strong></td><td class="center"><button class="btn-danger" onclick="removeItem(${idx})" style="padding:8px 10px">Xóa</button></td></tr>`).join('');
       const t=getTotals(); ['subtotal','discount','shippingFee','paid','debt','grand'].forEach(k=>document.getElementById(k+'Text').textContent=formatMoney(t[k])); document.getElementById('remainPreview').value=formatMoney(t.debt);
     }
 
