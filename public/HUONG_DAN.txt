@@ -1,2 +1,0 @@
-Đã đổi QR sang VietQR online, không cần file qr.jpg.
-Upload index.html và index.template.html lên repo rồi Vercel Redeploy Clear Build Cache.
